@@ -1,11 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
+  describe "grams#destroy action" do
+    it "should allow user to destroy grams" do
+      gram = FactoryGirl.create(:gram)
+      delete :destroy, id: gram.id
+      expect(response).to redirect_to root_path
+      gram = Gram.find_by_id(gram.id)
+      expect(gram).to eq nil
+    end
+
+    it "should return 404 error if gram does not exist" do
+      delete :destroy, id: "nonexistant"
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe "grams#update action" do
     it "should allow users to successfully update grams" do
       gram = FactoryGirl.create(:gram)
       patch :update, id: gram.id, gram: {message: 'Hello again!'}
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to gram_path(gram.id)
       gram.reload
       expect(gram.message).to eq("Hello again!")
     end
@@ -83,9 +98,8 @@ RSpec.describe GramsController, type: :controller do
     and send to gram's show page" do
       user = FactoryGirl.create(:user)
       sign_in user
-
       post :create, gram: {message: 'Hello!'}
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to gram_path(Gram.last)
 
       gram = Gram.last
       expect(gram.message).to eq("Hello!")
