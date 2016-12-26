@@ -2,8 +2,22 @@ require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
   describe "grams#destroy action" do
+    it "only user that created gram can destroy it" do
+      user = FactoryGirl.create(:user)
+      sign_in user
+      gram = FactoryGirl.create(:gram)
+      delete :destroy, id: gram.id
+      expect(response).to have_http_status(:forbidden)
+    end
+    it "should require users to be logged in to destroy gram" do
+      gram = FactoryGirl.create(:gram)
+      delete :destroy, id: gram.id
+      expect(response).to redirect_to new_user_session_path
+    end
+
     it "should allow user to destroy grams" do
       gram = FactoryGirl.create(:gram)
+      sign_in gram.user
       delete :destroy, id: gram.id
       expect(response).to redirect_to root_path
       gram = Gram.find_by_id(gram.id)
@@ -11,14 +25,31 @@ RSpec.describe GramsController, type: :controller do
     end
 
     it "should return 404 error if gram does not exist" do
+      user = FactoryGirl.create(:user)
+      sign_in user
       delete :destroy, id: "nonexistant"
       expect(response).to have_http_status(:not_found)
     end
   end
 
   describe "grams#update action" do
+    it "only user that created gram can update it" do
+      user = FactoryGirl.create(:user)
+      sign_in user
+      gram = FactoryGirl.create(:gram)
+      patch :update, id: gram.id, gram: {message: 'Hello again!'}
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "should require users to be logged in to update gram" do
+      gram = FactoryGirl.create(:gram)
+      patch :update, id: gram.id, gram: {message: 'Hello again!'}
+      expect(response).to redirect_to new_user_session_path
+    end
+
     it "should allow users to successfully update grams" do
       gram = FactoryGirl.create(:gram)
+      sign_in gram.user
       patch :update, id: gram.id, gram: {message: 'Hello again!'}
       expect(response).to redirect_to gram_path(gram.id)
       gram.reload
@@ -26,12 +57,15 @@ RSpec.describe GramsController, type: :controller do
     end
 
     it "should have http 404 error if the gram cannot be found" do
+      user = FactoryGirl.create(:user)
+      sign_in user
       patch :update, id: "nonexistant", gram: {message: 'Hello again!'}
       expect(response).to have_http_status(:not_found)
     end
 
     it "should render the edit form with an http status of unprocessable_entity" do
       gram = FactoryGirl.create(:gram)
+      sign_in gram.user
       patch :update, id: gram.id, gram: { message: '' }
       expect(response).to have_http_status(:unprocessable_entity)
       gram.reload
@@ -40,13 +74,29 @@ RSpec.describe GramsController, type: :controller do
   end
 
   describe "grams#edit action" do
+    it "only user that created gram can access editing page of gram" do
+      user = FactoryGirl.create(:user)
+      sign_in user
+      gram = FactoryGirl.create(:gram)
+      get :edit, id: gram.id
+      expect(response).to have_http_status(:forbidden)
+    end
+    it "should require users to be logged in to update gram" do
+      gram = FactoryGirl.create(:gram)
+      get :edit, id: gram.id
+      expect(response).to redirect_to new_user_session_path
+    end
+
     it "should successfully show the edit form if the gram is found" do
       gram = FactoryGirl.create(:gram)
+      sign_in gram.user
       get :edit, id: gram.id
       expect(response).to have_http_status(:success)
     end
 
     it "should return a 404 error message if the gram is not found" do
+      user = FactoryGirl.create(:user)
+      sign_in user
       get :edit, id: 'nonexistant'
       expect(response).to have_http_status(:not_found)
     end
@@ -88,7 +138,6 @@ RSpec.describe GramsController, type: :controller do
   end
 
   describe "grams#create action" do
-
     it "should require users to be logged in" do
       post :create, gram: {message: "Hello"}
       expect(response).to redirect_to new_user_session_path
