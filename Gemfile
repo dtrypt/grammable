@@ -50,3 +50,7 @@ gem 'sprockets', '2.11.0'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'devise'
+gem 'carrierwave', '~> 1.0'
+gem 'mini_magick'
+gem 'carrierwave-aws'
+gem "figaro"
