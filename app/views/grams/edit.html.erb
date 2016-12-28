@@ -1,5 +1,8 @@
-<h1 class="text-center">Edit Page</h1> 
+<div class="col-xs-offset-1 col-sm-8 col-sm-offset-2 card form">
+<h1 class="text-center">Edit Gram</h1> 
 <%= simple_form_for @gram do |f| %>
+  <%= f.input :picture %>
   <%= f.input :message %>
-  <%= f.submit %>
+  <%= f.submit 'Update Gram', class: 'my-btn' %>
 <% end %>
+</div>

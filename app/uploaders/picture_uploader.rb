@@ -8,7 +8,7 @@ class PictureUploader < CarrierWave::Uploader::Base
   storage :aws
   #storage :file
   # storage :fog
-  process resize_to_fill: [400, 400]
+  process resize_to_fill: [500, 500]
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir

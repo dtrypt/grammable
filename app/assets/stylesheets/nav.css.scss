@@ -1,2 +1,26 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
+.top-nav {
+  background-color:white;
+  border-bottom-color: #edeeee;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  height: 70px;
+  padding-top: 15px;
+}
+
+.brand {
+  color: #125688;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Irish Grover', cursive;
+}
+
+.top-nav .add a {
+  color: #125688;
+  font-size: 20px;
+  padding-left: 8px;
+}
+
+.brand:hover {
+  text-decoration: none;
+  color: #000a33
+}

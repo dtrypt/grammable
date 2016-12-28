@@ -46,10 +46,6 @@ class GramsController < ApplicationController
   def gram_params
     params.require(:gram).permit(:picture, :message)
   end
-  
-  def render_not_found
-    render text: 'Not Found', status: :not_found
-  end
 
   def gram_is_valid
     if @gram.valid?

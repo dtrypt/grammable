@@ -1,3 +1,4 @@
+<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 card form">
 <h2>Log in</h2>
 
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -6,10 +7,11 @@
     <%= f.input :password, required: false %>
     <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
   </div>
-
+<br class="clr">
   <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
+    <%= f.button :submit, "Log in", class: 'my-btn' %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+</div>

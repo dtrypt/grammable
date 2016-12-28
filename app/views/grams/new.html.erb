@@ -1,6 +1,9 @@
-<h1 class="text-center">New page</h1> 
-<%= simple_form_for @gram do |f| %>
-  <%= f.input :picture %>
-  <%= f.input :message %>
-  <%= f.submit "Post!" %>
-<% end %>
+<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 card form">
+  <h1 class="text-center">New Gram</h1> 
+  <%= simple_form_for @gram do |f| %>
+    <%= f.input :picture %>
+    <%= f.input :message %>
+    <br>
+    <%= f.submit "Post!", class: 'my-btn' %>
+  <% end %>
+</div>
