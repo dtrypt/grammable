@@ -20,7 +20,7 @@ RSpec.describe CommentsController, type: :controller do
       sign_in user
       gram = FactoryGirl.create(:gram)
       post :create, gram_id: gram.id, comment: {remark: "Nice pic"}
-      expect(response).to redirect_to gram_path(gram.id)
+      expect(response).to redirect_to root_path
       comment = Comment.last
       expect(comment.remark).to eq("Nice pic")
     end

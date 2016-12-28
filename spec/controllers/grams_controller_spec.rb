@@ -51,7 +51,7 @@ RSpec.describe GramsController, type: :controller do
       gram = FactoryGirl.create(:gram)
       sign_in gram.user
       patch :update, id: gram.id, gram: {message: 'Hello again!'}
-      expect(response).to redirect_to gram_path(gram.id)
+      expect(response).to redirect_to root_path
       gram.reload
       expect(gram.message).to eq("Hello again!")
     end
@@ -144,14 +144,14 @@ RSpec.describe GramsController, type: :controller do
     end
 
     it "should post the user's gram (creating gram in our database)
-    and send to gram's show page" do
+    and send to homepage" do
       user = FactoryGirl.create(:user)
       sign_in user
       post :create, gram: {
         #picture: fixture_file_upload("/picture.png", 'image/png'),
         message: 'Hello!'
       }
-      expect(response).to redirect_to gram_path(Gram.last)
+      expect(response).to redirect_to root_path
 
       gram = Gram.last
       expect(gram.message).to eq("Hello!")
